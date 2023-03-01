@@ -7,22 +7,39 @@
 
 主要内容分为：
 - win
+
 介绍windows下如何配置terminal和更改键盘映射为vim风格
+
 - mac
+
 主要介绍mac下如何美化terminal和更改键盘映射（使用karabinder），同时包含了mac端iMovie剪辑软件的使用方法
+
 - vim
+
 介绍vim的常用命令和操作，来源于b站。此后会加入neovim配置教程
+
 - uos
+
 国产linux统信操作系统的安装和使用教程(内含双系统安装教程)
+
 - ubuntu
+
 我的第一个linux系统，ubuntu的使用和美化，修改键盘映射，几个桌面环境的介绍
+
 - arch
+
 Archlinux安装、配置、美化，使用i3wm窗口管理，（待补充）
+
 - github
+
 git和github的简单介绍
+
 - Andriod&iphoe
+
 手机使用小技巧
+
 - 魔法
+
 不同系统下的代理设置
 
 以上每个目录下的README均具有toc功能，可以指示该文件夹下的资源路径
