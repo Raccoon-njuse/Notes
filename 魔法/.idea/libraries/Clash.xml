@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Clash">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Clash.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
