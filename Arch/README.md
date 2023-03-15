@@ -213,7 +213,7 @@ for_window [class="alactritty"] floating enable
 
 ### 2.6 设定窗口默认布局
 
-使用i3-layout进行管理：
+#### i3-layout
 
 https://github.com/eliep/i3-layouts#layouts
 
@@ -248,6 +248,67 @@ https://github.com/newmanls/rofi-themes-collection#windows-11
 https://github.com/adi1090x/polybar-themes
 
 - 还有一些其他dotfile里面的polybar配置，可以试试
+
+**polybar**配置文件详解：
+
+首先，目前我启动polybar的方式为：i3中自动启动一个`.config/polybar/launch.sh`
+
+这个sh链接到github仓库的sh, github仓库中的sh就是打开对应的config.init的shell命令
+
+通过切换不同的链接,可以实现不同polybar主题,目前我正在使用的主题是:keyitdev
+
+**config**配置
+
+里面是很多模块, 参见github上的wiki, 每个模块类似于系统调用, 只要写明模块名称就会自动调用`sys/class/`底下的设备信息
+
+同时可以定义每个模块的特殊字符等等, 最后由 main bar里面的左中右来设置整个bar
+
+tray模块定义了系统图标
+
+- bug
+
+polybar的报错信息
+
+```
+Disabling module "backlight" (reason: The file '/sys/class/backlight/amdgpu_bl0/actual_brightness' does not exist)
+```
+
+这条信息大概是说,背光模块没加载出来(事实上在bar上面也是空的)
+
+因此引入linux背光调整,见backlight 2.15,这里写的是amdgpu,不知道我能不能手动改一下变成intel,那就解决了
+
+事实证明是对的,但是我在滚轮调节亮度的时候,出现了新的报错,估计是因为写入权限的问题
+
+```
+error: module/backlight: Unable to change backlight value. Your system may require additional configuration. Please read the module documentation.
+(reason: failed to write to /sys/class/backlight/intel_backlight/brightness: Permission denied)
+```
+把brightness文件设置为777权限即可
+我用了非常神奇的602权限哈哈哈
+
+- 如何在开机时候自动将bright设置为602:
+
+这个操作是非常危险的,不建议用service的方式开机自动启动chmod脚本，这会使得整个系统变得杂乱
+
+另一个报错信息
+```
+tray: Failed to put tray above 0x1000002 in the stack (XCB_MATCH (8))
+```
+这里大概是说,系统的tray模块没显示到什么什么地方,但是我自己没啥问题,就不管了
+
+后来我把tray-background设置为${color.background},使得系统图标可以有个背景,好看一点,这样可能不太好加模块半圆形, 但是也还不错
+
+最后我是把声音和背光都调整没了。感觉不太有用，都涉及到sys中的一些设备，很繁琐，不如终端 见2.15和2.16
+
+温度也删了，感觉读取不是很准确
+
+在机房电脑里面，配置k-vernooy的dotfiles时候，发现很多nerd图标不能正确显示。README里面提示我安装nerd字体，但是我明明安装了，却还是显示不出来。后来我用yay搜索了一下：
+
+发现是必须要安装`tty-hack-nerd`才行，划重点：必须带`nerd`，不过yysy,之前从github clone仓库的时候也是带nerd的，很奇怪
+
+不管怎么说，理解了nerd字体的工作原理是一件很不错的事。其实是一串编码：\uxxxx
+
+然后在nerd官网上可以找到大量的图标
 
 ### 2.9 alacritty
 
@@ -308,6 +369,29 @@ https://www.bilibili.com/video/BV15V4y1g7L6/?spm_id_from=333.337.search-card.all
 
 终端查词的有道版本，github直接搜
 
+### 2.14 分区gparted
+
+这个好像是无损分区，调整佬boot平移都不影响efi
+
+### 2.15 backlight背光调整
+
+命令行的方式是往`sys/class/backlight/intel_backlight`里面写文件,最大亮度见max文件
+
+参考[](https://zhuanlan.zhihu.com/p/269714827#:~:text=%E9%9C%80%E8%A6%81%E8%B0%83%E8%8A%82%E4%BA%AE%E5%BA%A6%E6%97%B6%EF%BC%8C%E5%88%87%E6%8D%A2%E5%88%B0%20root%20%E7%94%A8%E6%88%B7%EF%BC%8C%E7%9B%B4%E6%8E%A5%E5%90%91%20brightness%20%E5%86%99%E5%85%A5%E6%95%B0%E5%80%BC%E5%8D%B3%E5%8F%AF%E8%B0%83%E8%8A%82%E4%BA%AE%E5%BA%A6%EF%BC%9A%20echo,50%20%3E%20brightness%20%E6%B3%A8%E6%84%8F%E8%8C%83%E5%9B%B4%E4%B8%BA%20%5B0-max_brightness%5D%20%EF%BC%8C%E9%9D%9E%E6%B3%95%E8%8C%83%E5%9B%B4%E4%B8%8D%E8%83%BD%E6%89%A7%E8%A1%8C%E6%88%90%E5%8A%9F%EF%BC%9A)
+
+也可以有其他图形化工具, 
+### 2.16 声音调节
+
+在安装了`alsa-utils`之后，可以通过alsamixer调用终端调节音量，这个比kde设置快一些
+
+
+### 2.17 腾讯会议
+关于i3中的腾讯会议，有很多bug,这种动态堆叠窗口似乎并不适合在wm中使用。
+
+比方说出现了闪屏的问题，关掉picom才解决
+
+再比方说动画卡顿的问题，这个我不清楚是不是我的网络问题，感觉uos的腾讯会议做的都好一些，这个在plasma下依然有问题
+
 ## 3. 我与代理那些事
 
 ### 3.1 如何同步时间：
@@ -359,8 +443,22 @@ journalctl -fu v2raya -n 100 #查看执行记录
 
 是否可能是没有安装v2ray内核？
 
+### 3.3 ip和转发
 
+问题背景：
 
+1. 在注册chatgpt时，识别依然为南京ip
+
+2. 在校外使用easyconnect访问校园网时，git ssh无法使用但是git http可以使用的问题
+
+这涉及到根本的两件事情，
+1. 访问外网和ip在国外是两码事
+
+2. 能访问校园服务器和ssh是两码事
+
+总结起来，第一，如果要使用chatcpt, 就把白名单模式改成不进行分流
+
+第二，如果要用ssh,就关掉所有代理
 
 
 ## BUG
@@ -399,5 +497,47 @@ XRandR returned error code 1: b'xrandr:cannot find mode None\n
 xlayoutdisplay是可以进行3840 60hz的
 只是dpi有问题
 
- 
+![image-20230302141214131](/home/raccoon/.config/Typora/typora-user-images/image-20230302141214131.png)
 
+比如这里就可以成功显示4k60hz，动画有点卡，不知道换成低分辨率和低dpi是否会好一些
+
+kde settings能挑出来60hz
+
+## //TODO
+
+neovim
+
+第三方qq：icalingua++
+
+polybar简洁模式（如何显示系统图标
+
+看看tray报错
+
+![image-20230303230551104](/home/raccoon/.config/Typora/typora-user-images/image-20230303230551104.png)
+
+图标终端
+
+截图schot
+
+firefox起始页面，vim插件
+
+https://github.com/k-vernooy/dotfiles
+
+qt配色和ixdm配色（thechw佬和洋芋佬）
+thecw笔记：
+42：23 主题 lxapperance
+ranger有专门视频thecw
+洋芋40：20
+neovim视频
+https://www.bilibili.com/video/BV1QL4y147VD/?spm_id_from=333.337.search-card.all.click&vd_source=9fc1aeab20d64d4315c451b9c18d30d8
+https://www.bilibili.com/video/BV14a41147ap/?spm_id_from=333.337.search-card.all.click&vd_source=9fc1aeab20d64d4315c451b9c18d30d8
+
+ranger终端文件管理
+
+xmodmap,thechw佬，重新尝试清除修饰键
+
+
+
+dpi更换，显示更模糊但想要更好的动画
+
+dunst主题
