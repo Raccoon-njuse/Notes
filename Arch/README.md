@@ -1,9 +1,6 @@
 # ArchLinux
-
 ![image-20230223082638948](/home/raccoon/.config/Typora/typora-user-images/image-20230223082638948.png)
-
 ## 前言
-
 正如我预料到的那样，选择arch确实是一个正确的决定，在高度定制的环境和详细的说明文档中，亲自搭建自己的工作区，是一种莫大的乐趣，这种乐趣本身也是一种学习。
 
 在使用arch的过程中往往会遇到很多发疯的时刻，比方说明明按照教程来但是却完全不符合我的预期，这种情况我戏称为**“计算机学科不存在了”**。这种发疯常常让人达到废寝忘食的程度，可能早晨9点起来一直趴在桌子上到下午四点，为了一个bug，甚至可以一直不吃饭。亦或许会放弃考试复习的时间。兴许是有些不务正业，但在软院大三的高压学习和摆烂氛围下找到一件感兴趣的事情也许并不算一件坏事。至少，我已经很少感受到这种兴奋和探索的乐趣了。
@@ -290,6 +287,8 @@ error: module/backlight: Unable to change backlight value. Your system may requi
 
 这个操作是非常危险的,不建议用service的方式开机自动启动chmod脚本，这会使得整个系统变得杂乱
 
+在处理magickeyboard的fn功能键的时候遇到一个可行的解决方案, 见keyboard
+
 另一个报错信息
 ```
 tray: Failed to put tray above 0x1000002 in the stack (XCB_MATCH (8))
@@ -459,6 +458,31 @@ journalctl -fu v2raya -n 100 #查看执行记录
 总结起来，第一，如果要使用chatcpt, 就把白名单模式改成不进行分流
 
 第二，如果要用ssh,就关掉所有代理
+
+
+
+## 4. 关于键盘
+
+### 4.1 xmodmap
+
+### 4.2 magickeyboard
+
+在使用magickeyboard中遇到了一些问题
+
+一个是左下角不做ctrl真的反人类
+
+还有一个是，经典的标准功能键问题
+
+参考一篇博客，实现更改fn模式，并永久写入（即sys中的文件在开机阶段就更改）
+https://www.hashbangcode.com/article/turning-or-fn-mode-ubuntu-linux
+
+
+还有就是，打开开关就可以瞬间被arch连接检测到，很合理
+### 4.3 fcitx5
+
+fcitx5如果存在zh和拼音两种选项时，zh会影响xmodmap,具体表现为：终端只有在拼音状态下caps键才能发挥esc作用
+
+方法是去除zh,使用en和拼音
 
 
 ## BUG

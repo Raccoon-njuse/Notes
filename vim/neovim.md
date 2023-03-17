@@ -55,3 +55,22 @@ vim.opt.spelllang = zh
 
 下载的插件在：
 `/home/raccoon/.local/share/lunarvim/site/pack/packer/start`
+
+## lunar交流群代办
+
+## lunar clipboard
+
+报错找不到粘贴支持
+
+参考这个文章下载xclip
+https://blog.csdn.net/lxyoucan/article/details/124326933
+
+## lunar spelllang 找不到词典
+
+首先声明，在spelllang中设置zh的方式是不对的。因为vim/spell中没有这个词典，默认拼写是en加cjk
+https://zhuanlan.zhihu.com/p/24986495
+参考这个链接
+
+至于为什么设置了false还是会有拼写检查，这个我得去lunar中文用户群体里面问问
+
+至于解决方案嘛，设置为cjk就好了，注意加引号
