@@ -74,3 +74,8 @@ https://zhuanlan.zhihu.com/p/24986495
 至于为什么设置了false还是会有拼写检查，这个我得去lunar中文用户群体里面问问
 
 至于解决方案嘛，设置为cjk就好了，注意加引号
+
+## lunar bar
+全称叫：lualine
+在lvim的config中添加default即可
+见官方文档
